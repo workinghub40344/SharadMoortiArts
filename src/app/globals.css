@@ -1,26 +1,147 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Marcellus&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Marble Moortis — Premium devotional luxury design system. All colors HSL. */
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* "Divine Gallery" Premium Light Palette */
+    --background: 40 20% 98%;          /* Soft pearl/ivory */
+    --foreground: 20 15% 15%;          /* Deep charcoal text */
+
+    --card: 0 0% 100%;                 /* Pure white for cards */
+    --card-foreground: 20 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 15% 15%;
+
+    --primary: 38 40% 45%;             /* Elegant muted gold */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 10% 92%;           /* Soft grey-ivory */
+    --secondary-foreground: 20 15% 15%;
+
+    --muted: 40 10% 92%;
+    --muted-foreground: 20 5% 45%;     /* Softer text */
+
+    --accent: 38 40% 45%;              
+    --accent-foreground: 0 0% 100%;
+
+    --gold: 38 40% 45%;                /* Classic Antique Gold */
+    --gold-soft: 38 30% 70%;
+    --gold-deep: 38 50% 35%;
+
+    --espresso: 20 15% 15%;            /* Used for dark contrast elements */
+    --espresso-deep: 20 20% 10%;
+    --ivory: 40 20% 98%;
+    --marble: 0 0% 100%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 10% 90%;
+    --input: 40 10% 90%;
+    --ring: 38 40% 45%;
+
+    --radius: 0rem; 
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(180deg, hsl(40 20% 98%) 0%, hsl(0 0% 100%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(38 40% 50%), hsl(38 50% 35%));
+    --gradient-spotlight: radial-gradient(circle at center, hsl(38 40% 45% / 0.05), transparent 70%);
+    
+    --shadow-elegant: 0 20px 40px -10px hsl(20 15% 15% / 0.05);
+    --shadow-soft: 0 4px 20px -5px hsl(20 15% 15% / 0.03);
+    
+    --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+    font-feature-settings: "ss01", "cv11", "liga", "dlig";
+  }
+  h1, h2, h3, h4, h5 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    font-feature-settings: "liga", "dlig", "swsh";
+  }
+  .font-display { font-family: 'Cinzel Decorative', 'Cinzel', serif; letter-spacing: 0.14em; font-weight: 700; }
+  .font-display-thin { font-family: 'Cinzel', serif; letter-spacing: 0.22em; font-weight: 400; }
+  .font-serif-display { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .font-sanskrit { font-family: 'Tiro Devanagari Sanskrit', serif; letter-spacing: 0.02em; }
+  .font-marcellus { font-family: 'Marcellus', serif; letter-spacing: 0.05em; }
+
+  .text-ornate {
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: linear-gradient(180deg, hsl(var(--gold)) 0%, hsl(var(--gold-deep)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  /* Marble texture overlay */
+  .texture-marble {
+    background-image:
+      radial-gradient(circle at 20% 30%, hsl(0 0% 100% / 0.6), transparent 40%),
+      radial-gradient(circle at 80% 70%, hsl(40 10% 90% / 0.4), transparent 50%),
+      linear-gradient(180deg, hsl(40 20% 98%), hsl(40 10% 95%));
+  }
+
+  .texture-paper {
+    background-image:
+      radial-gradient(hsl(20 15% 15% / 0.05) 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+
+  .texture-stone {
+    background-image:
+      radial-gradient(circle at 30% 20%, hsl(38 30% 20% / 0.4), transparent 50%),
+      radial-gradient(circle at 70% 80%, hsl(22 40% 8% / 0.6), transparent 60%),
+      linear-gradient(135deg, hsl(22 40% 8%), hsl(25 35% 14%));
+  }
+
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
+  }
+
+  .gold-text {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hover-lift {
+    transition: transform 0.5s var(--transition-smooth), box-shadow 0.5s var(--transition-smooth);
+  }
+  .hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .image-zoom { overflow: hidden; }
+  .image-zoom img {
+    transition: transform 0.9s var(--transition-smooth);
+  }
+  .image-zoom:hover img { transform: scale(1.08); }
+
+  .section-padding { @apply py-20 md:py-28 lg:py-32; }
+  .container-luxe { @apply mx-auto max-w-7xl px-5 md:px-8 lg:px-12; }
 }
