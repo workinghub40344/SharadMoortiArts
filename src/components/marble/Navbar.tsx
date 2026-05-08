@@ -6,12 +6,14 @@ import { Menu, Search, X, ChevronDown, ShoppingBag, ChevronRight } from "lucide-
 import { BRAND, NAV_LINKS, TRUST_STRIP, COLLECTION_DROPDOWN, HERO } from "@/data/site";
 import Image from "next/image";
 import CartSidebar from "./CartSidebar";
+import SearchOverlay from "./SearchOverlay";
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useEffect(() => {
@@ -149,7 +151,11 @@ export default function Navbar() {
 
           {/* Actions - Pushed to Right */}
           <div className="flex-1 flex items-center justify-end gap-2 md:gap-4">
-            <button aria-label="Search" className="p-2 text-foreground/70 hover:text-gold-deep transition-colors">
+            <button 
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search" 
+              className="p-2 text-foreground/70 hover:text-gold-deep transition-colors"
+            >
               <Search className="w-[18px] h-[18px]" strokeWidth={1.5} />
             </button>
             
@@ -172,8 +178,9 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Cart Sidebar */}
+      {/* Overlays */}
       <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Mobile drawer */}
       <AnimatePresence>
