@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Everything Claude Code (ECC)
+everything-claude-code/
+.agent/

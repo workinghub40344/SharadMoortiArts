@@ -1,122 +1,185 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { ArrowDown, Sparkles, MoveRight } from "lucide-react";
 import Image from "next/image";
 import { HERO, BRAND } from "@/data/site";
 
 export default function HeroSection() {
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 150]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
+  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+
+  // Mouse move for spotlight effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      mouseX.set(clientX);
+      mouseY.set(clientY);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
+
   return (
-    <section className="relative overflow-hidden bg-gradient-hero text-foreground">
-      {/* Spotlight glow */}
-      <div className="absolute inset-0 bg-gradient-spotlight pointer-events-none z-0" />
-      <div className="absolute inset-0 texture-paper opacity-50 pointer-events-none z-0 mix-blend-multiply" />
+    <section className="relative overflow-hidden bg-gradient-hero text-foreground min-h-[90vh] flex items-center">
+      {/* Dynamic Spotlight */}
+      <motion.div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-40"
+        style={{
+          background: useTransform(
+            [springX, springY],
+            ([x, y]) => `radial-gradient(circle at ${x}px ${y}px, hsl(var(--gold) / 0.15) 0%, transparent 40%)`
+          )
+        }}
+      />
       
-      {/* Mandala Background Image */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      {/* Background Mandala with Parallax */}
+      <motion.div 
+        style={{ y: y1, opacity }}
+        className="absolute inset-0 z-0 overflow-hidden pointer-events-none"
+      >
         <Image
           src="/images/mandala-bg.png"
           alt="Divine Mandala Pattern"
           fill
           priority
-          className="object-cover object-right-top opacity-20 mix-blend-multiply transition-opacity duration-1000"
+          className="object-cover object-right-top opacity-[0.15] mix-blend-multiply scale-110"
         />
-        {/* Soft overlay to blend it with ivory theme */}
-        <div className="absolute inset-0 bg-background/60" />
-      </div>
+        <div className="absolute inset-0 bg-background/40" />
+      </motion.div>
 
-      <div className="container-luxe relative grid lg:grid-cols-12 gap-10 lg:gap-16 items-center pt-16 pb-20 lg:pt-24 lg:pb-28 min-h-[88vh]">
-        {/* Left — editorial copy */}
+      <div className="container-luxe relative grid lg:grid-cols-12 gap-10 lg:gap-16 items-center pt-24 pb-20">
+        {/* Left — Editorial Copy */}
         <div className="lg:col-span-7 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="flex items-center gap-3 mb-8"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-4 mb-10"
           > 
-            <span className="h-px w-10 bg-gold/60" />
-            <span className="font-display text-[11px] tracking-[0.3em] text-gold-soft">
-              ATELIER · MAKRANA · EST. 1987
+            <span className="h-[1px] w-12 bg-gold/50" />
+            <span className="font-display text-[10px] md:text-[11px] tracking-[0.4em] text-gold-deep uppercase font-bold">
+              EST. 1987 · MAKRANA ATELIER
             </span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.1 }}
-            className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-[1.05] tracking-[0.02em] text-foreground uppercase"
-          >
-            DIVINE ART <br />
-            <span className="text-gold italic font-serif lowercase tracking-normal">of</span> MARBLE
-          </motion.h1>
+          <div className="relative">
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="font-display text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.9] tracking-[-0.02em] text-foreground uppercase"
+            >
+              DIVINE ART <br />
+              <span className="flex items-center gap-4">
+                <span className="text-gold italic font-serif lowercase tracking-normal text-3xl md:text-5xl lg:text-6xl normal-case pr-1 font-light">of</span>
+                MARBLE
+              </span>
+            </motion.h1>
+            
+            {/* Subtle floating ornament */}
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-12 -left-12 w-32 h-32 border border-gold/10 rounded-full opacity-20 pointer-events-none"
+            />
+          </div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-8 max-w-md text-base md:text-lg text-foreground/80 leading-relaxed font-light"
+            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-10 max-w-lg text-base md:text-xl text-foreground/70 leading-relaxed font-light"
           >
-            Handcrafted with devotion, <br />
-            inspired by tradition.
+            Preserving the sacred heritage of hand-carved stone. <br className="hidden md:block" />
+            Every chisel stroke, a silent prayer in Makrana marble.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.45 }}
-            className="mt-10 flex flex-wrap gap-4"
+            transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-12 flex flex-wrap gap-6"
           >
             <a
               href="#collections"
-              className="group inline-flex items-center gap-3 px-10 py-3.5 border border-foreground/40 text-foreground text-[10px] tracking-[0.3em] uppercase font-medium hover:bg-foreground hover:text-white transition-all duration-500"
+              className="group relative inline-flex items-center gap-4 px-12 py-5 bg-foreground text-white text-[11px] tracking-[0.3em] uppercase font-bold overflow-hidden"
             >
-              EXPLORE COLLECTION
+              <span className="relative z-10">EXPLORE COLLECTION</span>
+              <MoveRight className="relative z-10 w-4 h-4 transition-transform duration-500 group-hover:translate-x-2" />
+              <div className="absolute inset-0 bg-gold-deep -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+            </a>
+            
+            <a
+              href="#bespoke"
+              className="group inline-flex items-center gap-4 px-12 py-5 border border-foreground/20 text-foreground text-[11px] tracking-[0.3em] uppercase font-bold hover:border-gold/50 transition-all duration-500"
+            >
+              BESPOKE ORDERS
             </a>
           </motion.div>
         </div>
 
-        {/* Right — side cues like in image */}
-        <div className="hidden xl:flex absolute right-12 top-1/2 -translate-y-1/2 flex-col gap-6 text-[10px] tracking-[0.25em] uppercase text-foreground/40">
-          {["FULL VIEW", "ROTATE", "FACE DETAILS", "CARVING DETAILS"].map((item, idx) => (
-            <div key={item} className="flex items-center gap-4 group cursor-pointer hover:text-gold transition-colors">
-              <span className="w-6 h-6 rounded-full border border-foreground/20 flex items-center justify-center text-[8px] group-hover:border-gold">0{idx + 1}</span>
-              {item}
-            </div>
+        {/* Right — Interactive cues */}
+        <div className="hidden xl:flex absolute right-16 top-1/2 -translate-y-1/2 flex-col gap-10 text-[10px] tracking-[0.3em] uppercase text-foreground/30">
+          {["FULL VIEW", "DETAILS", "PROCESS", "HERITAGE"].map((item, idx) => (
+            <motion.div 
+              key={item} 
+              whileHover={{ x: -10, color: "hsl(var(--gold-deep))" }}
+              className="flex items-center gap-6 group cursor-pointer"
+            >
+              <span className="w-10 h-[1px] bg-foreground/10 group-hover:bg-gold-deep transition-colors" />
+              <span className="font-medium">{item}</span>
+              <span className="font-display opacity-40 group-hover:opacity-100">0{idx + 1}</span>
+            </motion.div>
           ))}
         </div>
 
-        {/* Right — product visual */}
-        <div className="lg:col-span-5 relative">
+        {/* Right — Product Visual with Depth */}
+        <div className="lg:col-span-5 relative mt-16 lg:mt-0 flex justify-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            style={{ y: y2 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.2 }}
-            className="relative aspect-[4/5] max-w-md mx-auto"
+            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+            className="relative aspect-[4/5] w-full max-w-md"
           >
-            <div className="absolute inset-0 bg-gradient-gold opacity-20 blur-3xl rounded-full" />
-            <Image
-              src={HERO.image}
-              alt="Hand-carved white Makrana marble Ganesha idol under a warm spotlight"
-              fill
-              priority
-              className="relative w-full h-full object-cover shadow-elegant"
-            />
+            {/* Ethereal Background Aura */}
+            <div className="absolute -inset-10 bg-radial-gold opacity-10 blur-[100px] rounded-full animate-pulse-slow" />
+            
+            <div className="relative w-full h-full p-2 bg-background shadow-elegant overflow-hidden">
+              <div className="absolute inset-0 texture-marble opacity-[0.03] pointer-events-none" />
+              
+              <Image
+                src={HERO.image}
+                alt="Divine Marble Sculpture"
+                fill
+                priority
+                className="relative w-full h-full object-cover"
+              />
+            </div>
 
-            {/* Floating badges */}
+            {/* Floating Badges with refined look */}
             {HERO.badges.map((b, i) => (
               <motion.div
                 key={b}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 + i * 0.15 }}
-                className={`absolute hidden md:flex items-center gap-2 px-4 py-2.5 bg-white/95 text-foreground backdrop-blur-md shadow-soft text-[10px] tracking-[0.2em] uppercase font-medium animate-float
-                  ${i === 0 ? "top-12 -left-6" : ""}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 1 + i * 0.2 }}
+                className={`absolute hidden md:flex items-center gap-3 px-5 py-2.5 bg-white/95 text-foreground backdrop-blur-md shadow-elegant border border-gold/10 text-[8px] tracking-[0.2em] uppercase font-bold
+                  ${i === 0 ? "top-8 -left-12" : ""}
                   ${i === 1 ? "top-1/2 -right-8" : ""}
-                  ${i === 2 ? "bottom-16 -left-10" : ""}
+                  ${i === 2 ? "bottom-8 -left-8" : ""}
                 `}
-                style={{ animationDelay: `${i * 0.6}s` }}
               >
-                <span className="w-1 h-1 bg-gold rounded-full" />
+                <div className="w-1.5 h-1.5 bg-gold rounded-full shadow-[0_0_8px_rgba(var(--gold),0.5)]" />
                 {b}
               </motion.div>
             ))}
@@ -124,15 +187,15 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Elegant Scroll indicator */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-foreground/50"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-4"
       >
-        <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-        <div className="w-px h-10 bg-gradient-to-b from-gold/60 to-transparent animate-pulse" />
+        <span className="text-[9px] tracking-[0.4em] uppercase text-foreground/40 font-bold">Scroll Down</span>
+        <div className="w-[1px] h-16 bg-gradient-to-b from-gold via-gold/50 to-transparent" />
       </motion.div>
     </section>
   );

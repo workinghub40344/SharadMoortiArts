@@ -5,10 +5,11 @@ import { PRODUCTS, MOORTI_PRODUCTS, TEMPLE_PRODUCTS, FOUNTAIN_PRODUCTS, BRAND } 
 import { MessageCircle, Shield, Truck, Sparkles, ChevronRight } from "lucide-react";
 import ProductCarouselSection from "@/components/marble/ProductCarouselSection";
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   // Combine all products to find the one we need
   const allProducts = [...PRODUCTS, ...MOORTI_PRODUCTS, ...TEMPLE_PRODUCTS, ...FOUNTAIN_PRODUCTS];
-  const product = allProducts.find(p => p.id === parseInt(params.id)) || PRODUCTS[0];
+  const product = allProducts.find(p => p.id === parseInt(id)) || PRODUCTS[0];
 
   return (
     <div className="min-h-screen bg-background text-foreground">

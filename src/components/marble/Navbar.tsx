@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X, ChevronDown, ShoppingBag, ChevronRight } from "lucide-react";
-import { BRAND, NAV_LINKS, TRUST_STRIP, COLLECTION_DROPDOWN } from "@/data/site";
+import { BRAND, NAV_LINKS, TRUST_STRIP, COLLECTION_DROPDOWN, HERO } from "@/data/site";
 import Image from "next/image";
 import CartSidebar from "./CartSidebar";
 
@@ -23,11 +23,16 @@ export default function Navbar() {
   }, []);
 
   if (!mounted) return (
-    <header className="sticky top-0 z-50 bg-transparent h-20 md:h-24">
-       <nav className="container-luxe flex items-center justify-between h-full">
-         <div className="font-display text-sm tracking-[0.4em] text-gold-deep">SHARAD MOORTI ARTS</div>
-       </nav>
-    </header>
+    <>
+      <div className="bg-secondary text-foreground/80 text-[10px] md:text-[11px] tracking-[0.2em] uppercase py-2 text-center font-display border-b border-foreground/5 h-[37px]">
+        {/* Placeholder to avoid layout shift */}
+      </div>
+      <header className="sticky top-0 z-50 bg-transparent h-20 md:h-24">
+        <nav className="container-luxe flex items-center justify-between h-full">
+          <div className="font-display text-sm tracking-[0.4em] text-gold-deep">SHARAD MOORTI ARTS</div>
+        </nav>
+      </header>
+    </>
   );
 
   return (
@@ -51,7 +56,7 @@ export default function Navbar() {
             : "bg-transparent border-b border-transparent"
         }`}
       >
-        <nav className="container-luxe flex items-center h-20 md:h-24">
+        <nav className="container-luxe relative flex items-center h-20 md:h-24">
           {/* Brand - Pushed to Left */}
           <div className="flex-1 flex justify-start">
             <a href="/" className="flex items-center gap-3 group">
@@ -67,7 +72,7 @@ export default function Navbar() {
             {NAV_LINKS.map((l) => (
               <li 
                 key={l.label} 
-                className="relative group py-8"
+                className="group py-8"
                 onMouseEnter={() => l.hasDropdown && setHoveredLink(l.label)}
                 onMouseLeave={() => setHoveredLink(null)}
               >
@@ -83,37 +88,57 @@ export default function Navbar() {
                 <AnimatePresence>
                   {l.hasDropdown && hoveredLink === l.label && (
                     <motion.div
-                      initial={{ opacity: 0, y: 15 }}
+                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 15 }}
-                      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 w-[900px] bg-background border border-border shadow-elegant p-10 grid grid-cols-4 gap-12"
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute top-full left-0 w-[1100px] max-w-[95vw] bg-background border border-border shadow-2xl z-[100]"
                     >
                       <div className="absolute inset-0 texture-paper opacity-30 pointer-events-none" />
-                      {COLLECTION_DROPDOWN.map((column) => (
-                        <div key={column.title} className="relative z-10">
-                          <h3 className="font-display text-[10px] tracking-[0.25em] text-gold-deep uppercase mb-6 border-b border-gold/10 pb-3 font-bold">
-                            {column.title}
-                          </h3>
-                          <ul className="space-y-3.5">
-                            {column.links.map((link) => (
-                              <li key={link.label}>
-                                <a 
-                                  href={link.href}
-                                  className="block text-[11px] tracking-widest text-foreground/70 hover:text-gold transition-all duration-300 uppercase hover:translate-x-1"
-                                >
-                                  {link.label}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
                       
-                      {/* Optional Bottom Accent */}
-                      <div className="col-span-4 mt-8 pt-6 border-t border-border flex items-center justify-between">
-                        <span className="text-[9px] tracking-[0.3em] text-muted-foreground uppercase">◆ Exclusive Atelier Designs</span>
-                        <a href="#collections" className="text-[9px] tracking-[0.3em] text-gold uppercase hover:underline underline-offset-4">View All Collections →</a>
+                      <div className="relative z-10 flex h-full">
+                        {/* Links Sections - 4 Columns */}
+                        <div className="flex-[3] p-10 grid grid-cols-4 gap-8 border-r border-border/50">
+                          {COLLECTION_DROPDOWN.map((column) => (
+                            <div key={column.title}>
+                              <h3 className="font-display text-[9px] tracking-[0.3em] text-gold-deep uppercase mb-6 border-b border-gold/10 pb-3 font-bold">
+                                {column.title}
+                              </h3>
+                              <ul className="space-y-3">
+                                {column.links.map((link) => (
+                                  <li key={link.label}>
+                                    <a 
+                                      href={link.href}
+                                      className="block text-[10px] tracking-widest text-foreground/70 hover:text-gold-deep transition-all duration-300 uppercase hover:translate-x-1"
+                                    >
+                                      {link.label}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Featured Section */}
+                        <div className="flex-[1.2] bg-secondary/20 p-10 flex flex-col justify-between">
+                          <div className="space-y-4">
+                            <h3 className="font-display text-[9px] tracking-[0.3em] text-gold-deep uppercase font-bold">Masterpiece of the Month</h3>
+                            <div className="relative aspect-square overflow-hidden border border-gold/10 shadow-elegant">
+                              <Image 
+                                src={BRAND.name === "Sharad Moorti Arts" ? HERO.image : "/images/placeholder.jpg"} 
+                                alt="Featured Piece" 
+                                fill 
+                                className="object-cover"
+                              />
+                            </div>
+                            <p className="font-serif text-lg text-foreground italic">Siddhi Vinayak Ganesha</p>
+                          </div>
+                          
+                          <a href="/collection" className="text-[9px] tracking-[0.4em] text-gold-deep font-bold uppercase border-b border-gold/30 hover:border-gold transition-colors mt-6 inline-block">
+                            VIEW COLLECTION →
+                          </a>
+                        </div>
                       </div>
                     </motion.div>
                   )}
@@ -134,7 +159,7 @@ export default function Navbar() {
               className="p-2 text-foreground/70 hover:text-gold-deep transition-colors relative"
             >
               <ShoppingBag className="w-[18px] h-[18px]" strokeWidth={1.5} />
-              <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-gold text-white text-[7px] flex items-center justify-center rounded-full">1</span>
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-white text-[8px] flex items-center justify-center rounded-full">1</span>
             </button>
             <button
               aria-label="Menu"
