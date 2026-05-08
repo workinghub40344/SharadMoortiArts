@@ -87,7 +87,7 @@ export function SectionHeader({ eyebrow, title, subtitle, light = false }: { eye
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className={`mt-5 text-base md:text-lg leading-relaxed font-light ${light ? "text-white/70" : "text-foreground/60"}`}
+          className={`mt-5 text-base md:text-lg leading-relaxed font-medium ${light ? "text-white/80" : "text-foreground/80"}`}
         >
           {subtitle}
         </motion.p>

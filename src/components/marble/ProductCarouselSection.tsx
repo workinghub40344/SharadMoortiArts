@@ -117,14 +117,14 @@ export default function ProductCarouselSection({ id, eyebrow, title, subtitle, p
                       </h3>
                     </Link>
                     
-                    <p className="text-[11px] text-muted-foreground/80 leading-relaxed font-light mb-6 line-clamp-2 italic font-serif">
+                    <p className="text-[12px] text-foreground/90 leading-relaxed font-medium mb-6 line-clamp-2 italic font-serif">
                       &quot;{p.desc}&quot;
                     </p>
 
                     <div className="mt-auto pt-6 border-t border-border/50 flex items-center justify-between">
                       <div className="flex flex-col">
-                        <span className="text-[8px] tracking-[0.2em] text-muted-foreground uppercase mb-0.5">Starting From</span>
-                        <span className="font-serif text-xl text-foreground font-medium">{formatINR(p.price)}</span>
+                        <span className="text-[8px] tracking-[0.2em] text-foreground/70 uppercase mb-0.5">Starting From</span>
+                        <span className="font-serif text-xl text-foreground font-semibold">{formatINR(p.price)}</span>
                       </div>
                       
                       <div className="flex gap-1">

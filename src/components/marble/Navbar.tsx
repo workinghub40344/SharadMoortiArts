@@ -52,7 +52,7 @@ export default function Navbar() {
       <header
         className={`sticky top-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-background/95 backdrop-blur-md border-b border-border shadow-elegant"
+            ? "glass-premium border-b border-border shadow-elegant"
             : "bg-transparent border-b border-transparent"
         }`}
       >
@@ -78,7 +78,7 @@ export default function Navbar() {
               >
                 <a
                   href={l.href}
-                  className="flex items-center gap-1.5 text-[11px] tracking-[0.2em] uppercase font-medium text-foreground/80 hover:text-gold-deep transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-gold after:transition-all hover:after:w-full"
+                  className="flex items-center gap-1.5 text-[11px] tracking-[0.2em] uppercase font-bold text-foreground/90 hover:text-gold-deep transition-colors relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-gold after:transition-all hover:after:w-full"
                 >
                   {l.label}
                   {l.hasDropdown && <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${hoveredLink === l.label ? "rotate-180" : ""}`} />}
@@ -197,7 +197,7 @@ export default function Navbar() {
               <div className="flex items-center justify-between mb-16 relative z-10">
                 <div className="flex flex-col">
                   <span className="font-display text-sm tracking-[0.3em] text-gold-deep -mb-1">SHARAD</span>
-                  <span className="font-display text-xl tracking-[0.15em] text-foreground">MOORTI ARTS</span>
+                  <span className="font-display text-xl tracking-[0.15em] text-foreground font-semibold">MOORTI ARTS</span>
                 </div>
                 <button onClick={() => setOpen(false)} aria-label="Close" className="p-2 hover:bg-secondary rounded-full transition-colors">
                   <X className="w-6 h-6" />

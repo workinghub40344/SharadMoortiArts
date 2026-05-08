@@ -29,7 +29,7 @@ export default function HeroSection() {
   }, [mouseX, mouseY]);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-hero text-foreground min-h-[90vh] flex items-center">
+    <section className="relative overflow-hidden bg-aura text-foreground min-h-[90vh] flex items-center">
       {/* Dynamic Spotlight */}
       <motion.div 
         className="absolute inset-0 z-0 pointer-events-none opacity-40"
@@ -81,7 +81,7 @@ export default function HeroSection() {
               DIVINE ART <br />
               <span className="flex items-center gap-4">
                 <span className="text-gold italic font-serif lowercase tracking-normal text-3xl md:text-5xl lg:text-6xl normal-case pr-1 font-light">of</span>
-                MARBLE
+                <span className="gold-shimmer">MARBLE</span>
               </span>
             </motion.h1>
             
@@ -97,7 +97,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-10 max-w-lg text-base md:text-xl text-foreground/70 leading-relaxed font-light"
+            className="mt-10 max-w-lg text-base md:text-xl text-foreground/90 leading-relaxed font-medium"
           >
             Preserving the sacred heritage of hand-carved stone. <br className="hidden md:block" />
             Every chisel stroke, a silent prayer in Makrana marble.
@@ -120,7 +120,7 @@ export default function HeroSection() {
             
             <a
               href="#bespoke"
-              className="group inline-flex items-center gap-4 px-12 py-5 border border-foreground/20 text-foreground text-[11px] tracking-[0.3em] uppercase font-bold hover:border-gold/50 transition-all duration-500"
+              className="group inline-flex items-center gap-4 px-12 py-5 text-foreground text-[11px] tracking-[0.3em] uppercase font-bold transition-all duration-500 luxury-border"
             >
               BESPOKE ORDERS
             </a>

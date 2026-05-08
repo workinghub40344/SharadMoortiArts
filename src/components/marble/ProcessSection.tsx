@@ -43,7 +43,7 @@ export default function ProcessSection() {
                 {i < 4 && (
                   <div className="hidden md:block absolute top-5 left-[60%] w-full h-[1px] bg-gold/20" />
                 )}
-                <span className="relative z-10 w-10 h-10 rounded-full bg-gold/10 border border-gold/40 flex items-center justify-center font-display text-sm text-gold group-hover:bg-gold group-hover:text-espresso transition-all duration-500 shadow-gold">
+                <span className="relative z-10 w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center font-display text-sm text-gold group-hover:bg-gold group-hover:text-espresso transition-all duration-500 shadow-gold luxury-border">
                   {i + 1}
                 </span>
               </div>
@@ -55,8 +55,10 @@ export default function ProcessSection() {
                 </div>
               </div>
 
-              <h3 className="font-display text-[10px] tracking-[0.2em] text-foreground mb-2 uppercase">{s.title}</h3>
-              <p className="text-[10px] text-foreground/60 leading-relaxed uppercase tracking-wider">{s.desc.split('.')[0]}</p>
+              <h3 className="font-display text-xs tracking-[0.2em] text-foreground mb-3 uppercase font-bold">{s.title}</h3>
+              <p className="text-[11px] text-foreground/80 leading-relaxed tracking-wide font-medium">
+                {s.desc}
+              </p>
             </motion.div>
           ))}
         </div>
